@@ -1,0 +1,27 @@
+# Ignore Docker artifacts
+*.log
+*.pid
+*.tmp
+
+# Local Docker volumes
+volumes/
+data/
+
+# Grafana cache (not needed in repo)
+grafana/data/
+grafana/plugins/
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Editor configs
+.vscode/
+.idea/
+
+# Python, Node or other tooling (in case)
+node_modules/
+__pycache__/
+
+# Do not ignore provisioning folders
+!grafana/provisioning/

@@ -1,0 +1,26 @@
+{
+  "title": "Altaïr PoC Dashboard",
+  "uid": "altair-poc",
+  "schemaVersion": 36,
+  "version": 1,
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Spawn Attempts",
+      "id": 1,
+      "datasource": "TestData",
+      "targets": [
+        { "refId": "A", "scenarioId": "random_walk", "stringInput": "Spawn Attempts" }
+      ]
+    },
+    {
+      "type": "stat",
+      "title": "Active Sessions",
+      "id": 2,
+      "datasource": "TestData",
+      "targets": [
+        { "refId": "A", "scenarioId": "random_walk", "stringInput": "Active Sessions" }
+      ]
+    }
+  ]
+}

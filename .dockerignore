@@ -1,0 +1,26 @@
+# Avoid sending unnecessary infra files into Docker contexts
+
+.git/
+.gitignore
+README.md
+LICENSE
+
+# Editor configs
+.vscode/
+.idea/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Docker volumes
+volumes/
+data/
+
+# Grafana runtime data
+grafana/data/
+grafana/plugins/
+grafana/logs/
+
+# Ignore docker-compose override files
+docker-compose.override.yml
