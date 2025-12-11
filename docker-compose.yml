@@ -6,3 +6,14 @@ services:
       context: ../altair-lab-api-service
     ports:
       - "8085:8085"
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: altair-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning
