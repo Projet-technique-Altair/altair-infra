@@ -1,17 +1,33 @@
 version: "3.9"
 
 services:
-  lab-api:
-    build:
-      context: ../altair-lab-api-service
+  #lab-api:
+   # build:
+    #  context: ../altair-lab-api-service
+    #ports:
+    #  - "8085:8085"
+    #environment:
+    #  DATABASE_URL: postgres://altair:altair@postgres:5432/altair
+    #depends_on:
+    #  - postgres
+
+  postgres:
+    image: postgres:16
+    container_name: altair-postgres
+    environment:
+      POSTGRES_DB: altair
+      POSTGRES_USER: altair
+      POSTGRES_PASSWORD: altair
     ports:
-      - "8085:8085"
+      - "5432:5432"
+    volumes:
+      - ./postgres/schema:/docker-entrypoint-initdb.d
 
   grafana:
     image: grafana/grafana:latest
     container_name: altair-grafana
     ports:
-      - "3000:3000"
+      - "4000:3000"
     environment:
       GF_SECURITY_ADMIN_USER: admin
       GF_SECURITY_ADMIN_PASSWORD: admin
