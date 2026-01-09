@@ -10,17 +10,17 @@ services:
     #depends_on:
     #  - postgres
 
-  # postgres:
-  #   image: postgres:16
-  #   container_name: altair-postgres
-  #   environment:
-  #     POSTGRES_DB: altair
-  #     POSTGRES_USER: altair
-  #     POSTGRES_PASSWORD: altair
-  #   ports:
-  #     - "5432:5432"
-  #   volumes:
-  #     - ./postgres/schema:/docker-entrypoint-initdb.d
+  postgres:
+    image: postgres:16
+    container_name: altair-postgres
+    environment:
+      POSTGRES_DB: altair
+      POSTGRES_USER: altair
+      POSTGRES_PASSWORD: altair
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres/schema:/docker-entrypoint-initdb.d
 
   grafana:
     image: grafana/grafana:latest
