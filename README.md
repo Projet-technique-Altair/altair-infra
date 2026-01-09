@@ -104,3 +104,15 @@ context: ../altair-lab-api-service
 Rebuild without cache:
 docker builder prune -af
 docker compose up --build --no-cache
+
+### 1. Lancer l’infra
+cd altair-infra
+docker compose up -d
+
+### 2. Lancer la gateway
+cd ../altair-gateway
+cargo run
+
+### 3. Lancer le frontend
+cd ../altair-frontend
+npm run dev

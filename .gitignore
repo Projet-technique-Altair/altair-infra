@@ -25,3 +25,8 @@ __pycache__/
 
 # Do not ignore provisioning folders
 !grafana/provisioning/
+
+# Env files
+.env
+.env.*
+!.env.example

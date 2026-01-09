@@ -1,5 +1,6 @@
 # Avoid sending unnecessary infra files into Docker contexts
 
+# Git
 .git/
 .gitignore
 README.md
@@ -24,3 +25,17 @@ grafana/logs/
 
 # Ignore docker-compose override files
 docker-compose.override.yml
+
+# Node / frontend
+node_modules
+dist
+build
+
+# Rust
+target
+
+# Secrets
+.env
+
+# Keycloak exports temporaires
+keycloak-export
