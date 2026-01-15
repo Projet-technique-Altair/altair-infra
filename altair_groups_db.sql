@@ -53,9 +53,6 @@ CREATE TABLE group_labs (
     ON DELETE CASCADE
 );
 
--- Indexes
-CREATE INDEX idx_group_labs_group
-  ON group_labs(group_id);
 
 -- ======================
 -- TABLE: group_starpaths
@@ -70,6 +67,4 @@ CREATE TABLE group_starpaths (
     ON DELETE CASCADE
 );
 
--- Indexes
-CREATE INDEX idx_group_starpaths_group
-  ON group_starpaths(group_id);
+

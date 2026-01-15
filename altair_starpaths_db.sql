@@ -43,9 +43,6 @@ CREATE TABLE starpath_labs (
 CREATE UNIQUE INDEX idx_starpath_labs_unique_position
   ON starpath_labs(starpath_id, position);
 
--- Index pour parcours ordonné
-CREATE INDEX idx_starpath_labs_position
-  ON starpath_labs(starpath_id, position);
 
 -- ======================
 -- TABLE: user_starpath_progress

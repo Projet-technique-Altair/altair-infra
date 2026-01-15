@@ -58,6 +58,3 @@ CREATE TABLE lab_progress (
     ON DELETE CASCADE
 );
 
--- Indexes
-CREATE INDEX idx_lab_progress_session
-  ON lab_progress(session_id);
