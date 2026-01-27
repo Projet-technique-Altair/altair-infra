@@ -44,4 +44,8 @@ services:
     ports:
       - "8080:8080"
     volumes:
+      # ✅ Import du realm
       - ./keycloak/realms:/opt/keycloak/data/import
+
+      # ✅ THEMES (LA LIGNE QUI MANQUAIT)
+      - ./keycloak/themes:/opt/keycloak/themes

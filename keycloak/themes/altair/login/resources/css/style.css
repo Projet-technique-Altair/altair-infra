@@ -1,0 +1,233 @@
+/* =========================
+   RESET
+========================= */
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+  font-family: Inter, system-ui, sans-serif;
+  color: #fff;
+}
+
+/* =========================
+   SCENE LAYOUT
+========================= */
+.scene {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 2px 1fr;
+  height: 100vh;
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      120deg,
+      #26135a 0%,
+      #120a32 45%,
+      #05030c 90%
+    );
+}
+
+/* subtle texture */
+.scene::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      120deg,
+      rgba(255,255,255,0.018) 0px,
+      rgba(255,255,255,0.018) 1px,
+      transparent 1px,
+      transparent 140px
+    );
+  pointer-events: none;
+}
+
+/* =========================
+   GLOBAL TITLE
+========================= */
+.global-title {
+  position: absolute;
+  top: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 360px;
+  z-index: 10;
+
+  filter:
+    drop-shadow(0 0 25px rgba(122,44,243,0.6))
+    drop-shadow(0 0 60px rgba(42,167,255,0.4));
+}
+
+/* =========================
+   PANELS
+========================= */
+.panel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* =========================
+   LEFT HERO
+========================= */
+.left {
+  overflow: hidden;
+}
+
+/* STAR */
+.hero-star {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-55%, -50%);
+
+  height: 100vh;
+  max-height: 1200px;
+
+  opacity: 0.95;
+
+  filter:
+    drop-shadow(0 0 160px rgba(122,44,243,0.6))
+    drop-shadow(0 0 320px rgba(42,167,255,0.3));
+}
+
+/* TAGLINE */
+.hero-text {
+  position: absolute;
+  bottom: 22%;
+  left: 58%;
+
+  max-width: 420px;
+
+  font-family: "Cormorant Garamond", "Playfair Display", serif;
+  font-size: 42px;
+  line-height: 1.05;
+  font-weight: 500;
+
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #e6ddff 55%,
+    #bfa9ff 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  text-shadow:
+    0 0 30px rgba(122,44,243,0.45);
+
+  z-index: 2;
+}
+
+/* =========================
+   DIVIDER
+========================= */
+.divider {
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(160,120,255,0.85),
+    transparent
+  );
+  box-shadow:
+    0 0 40px rgba(160,120,255,0.7);
+}
+
+/* =========================
+   LOGIN CARD
+========================= */
+.login-card {
+  width: 400px;
+  padding: 42px;
+  border-radius: 24px;
+
+  background: linear-gradient(
+    180deg,
+    rgba(22,24,48,0.95),
+    rgba(10,12,26,0.95)
+  );
+
+  box-shadow:
+    0 0 0 1px rgba(122,44,243,0.4),
+    0 40px 100px rgba(0,0,0,0.8),
+    inset 0 0 55px rgba(122,44,243,0.25);
+
+  backdrop-filter: blur(18px);
+}
+
+/* =========================
+   FORM
+========================= */
+label {
+  font-size: 13px;
+  margin-bottom: 6px;
+  display: block;
+  opacity: 0.75;
+}
+
+input {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 18px;
+  border-radius: 14px;
+  border: none;
+  background: rgba(255,255,255,0.07);
+  color: white;
+}
+
+button {
+  width: 100%;
+  padding: 15px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  color: white;
+
+  background: linear-gradient(
+    90deg,
+    #5ecbff,
+    #7a2cf3,
+    #ff8c4a
+  );
+}
+
+.forgot {
+  margin-top: 16px;
+  text-align: center;
+}
+
+.forgot a {
+  font-size: 13px;
+  color: rgba(255,255,255,0.55);
+  text-decoration: none;
+}
+
+/* =========================
+   MOBILE
+========================= */
+@media (max-width: 900px) {
+  .scene {
+    grid-template-columns: 1fr;
+  }
+
+  .divider,
+  .left {
+    display: none;
+  }
+
+  .global-title {
+    width: 240px;
+  }
+
+  .login-card {
+    width: 90%;
+  }
+}
