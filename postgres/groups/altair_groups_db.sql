@@ -14,6 +14,7 @@ CREATE TABLE groups (
   creator_id UUID NOT NULL,   -- référence logique vers Users MS
   name VARCHAR(255) NOT NULL,
   description TEXT,
+  created_by UUID NOT NULL,
   created_at TIMESTAMP DEFAULT timezone('UTC'::text, now()) NOT NULL
 );
 
