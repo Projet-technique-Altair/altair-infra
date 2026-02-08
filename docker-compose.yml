@@ -1,26 +1,68 @@
-
 services:
-  #lab-api:
-   # build:
-    #  context: ../altair-lab-api-service
-    #ports:
-    #  - "8085:8085"
-    #environment:
-    #  DATABASE_URL: postgres://altair:altair@postgres:5432/altair
-    #depends_on:
-    #  - postgres
+  postgres-users:
+    image: postgres:16
+    container_name: altair-postgres-users
+    environment:
+      POSTGRES_DB: altair_users_db
+      POSTGRES_USER: altair
+      POSTGRES_PASSWORD: altair
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./postgres/users:/docker-entrypoint-initdb.d
+      - pg_users:/var/lib/postgresql/data
 
-  # postgres:
-  #   image: postgres:16
-  #   container_name: altair-postgres
-  #   environment:
-  #     POSTGRES_DB: altair
-  #     POSTGRES_USER: altair
-  #     POSTGRES_PASSWORD: altair
-  #   ports:
-  #     - "5432:5432"
-  #   volumes:
-  #     - ./postgres/schema:/docker-entrypoint-initdb.d
+  postgres-groups:
+    image: postgres:16
+    container_name: altair-postgres-groups
+    environment:
+      POSTGRES_DB: altair_groups_db
+      POSTGRES_USER: altair
+      POSTGRES_PASSWORD: altair
+    ports:
+      - "5434:5432"
+    volumes:
+      - ./postgres/groups:/docker-entrypoint-initdb.d
+      - pg_groups:/var/lib/postgresql/data
+
+  postgres-starpaths:
+    image: postgres:16
+    container_name: altair-postgres-starpaths
+    environment:
+      POSTGRES_DB: altair_starpaths_db
+      POSTGRES_USER: altair
+      POSTGRES_PASSWORD: altair
+    ports:
+      - "5435:5432"
+    volumes:
+      - ./postgres/starpaths:/docker-entrypoint-initdb.d
+      - pg_starpaths:/var/lib/postgresql/data
+
+  postgres-sessions:
+    image: postgres:16
+    container_name: altair-postgres-sessions
+    environment:
+      POSTGRES_DB: altair_sessions_db
+      POSTGRES_USER: altair
+      POSTGRES_PASSWORD: altair
+    ports:
+      - "5436:5432"
+    volumes:
+      - ./postgres/sessions:/docker-entrypoint-initdb.d
+      - pg_sessions:/var/lib/postgresql/data
+
+  postgres-labs:
+    image: postgres:16
+    container_name: altair-postgres-labs
+    environment:
+      POSTGRES_DB: altair_labs_db
+      POSTGRES_USER: altair
+      POSTGRES_PASSWORD: altair
+    ports:
+      - "5437:5432"
+    volumes:
+      - ./postgres/labs:/docker-entrypoint-initdb.d
+      - pg_labs:/var/lib/postgresql/data
 
   grafana:
     image: grafana/grafana:latest
@@ -45,3 +87,11 @@ services:
       - "8080:8080"
     volumes:
       - ./keycloak/realms:/opt/keycloak/data/import
+      - ./keycloak/themes:/opt/keycloak/themes
+
+volumes:
+  pg_users:
+  pg_groups:
+  pg_starpaths:
+  pg_sessions:
+  pg_labs:
