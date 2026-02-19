@@ -4,74 +4,103 @@ services:
     container_name: altair-postgres-users
     environment:
       POSTGRES_DB: altair_users_db
-      POSTGRES_USER: altair
-      POSTGRES_PASSWORD: altair
+      POSTGRES_USER: ${POSTGRES_USER:-altair}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-altair}
     ports:
-      - "5433:5432"
+      - "${PG_USERS_PORT:-5433}:5432"
     volumes:
       - ./postgres/users:/docker-entrypoint-initdb.d
       - pg_users:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-altair} -d altair_users_db || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
 
   postgres-groups:
     image: postgres:16
     container_name: altair-postgres-groups
     environment:
       POSTGRES_DB: altair_groups_db
-      POSTGRES_USER: altair
-      POSTGRES_PASSWORD: altair
+      POSTGRES_USER: ${POSTGRES_USER:-altair}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-altair}
     ports:
-      - "5434:5432"
+      - "${PG_GROUPS_PORT:-5434}:5432"
     volumes:
       - ./postgres/groups:/docker-entrypoint-initdb.d
       - pg_groups:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-altair} -d altair_groups_db || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
 
   postgres-starpaths:
     image: postgres:16
     container_name: altair-postgres-starpaths
     environment:
       POSTGRES_DB: altair_starpaths_db
-      POSTGRES_USER: altair
-      POSTGRES_PASSWORD: altair
+      POSTGRES_USER: ${POSTGRES_USER:-altair}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-altair}
     ports:
-      - "5435:5432"
+      - "${PG_STARPATHS_PORT:-5435}:5432"
     volumes:
       - ./postgres/starpaths:/docker-entrypoint-initdb.d
       - pg_starpaths:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-altair} -d altair_starpaths_db || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
 
   postgres-sessions:
     image: postgres:16
     container_name: altair-postgres-sessions
     environment:
       POSTGRES_DB: altair_sessions_db
-      POSTGRES_USER: altair
-      POSTGRES_PASSWORD: altair
+      POSTGRES_USER: ${POSTGRES_USER:-altair}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-altair}
     ports:
-      - "5436:5432"
+      - "${PG_SESSIONS_PORT:-5436}:5432"
     volumes:
       - ./postgres/sessions:/docker-entrypoint-initdb.d
       - pg_sessions:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-altair} -d altair_sessions_db || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
 
   postgres-labs:
     image: postgres:16
     container_name: altair-postgres-labs
     environment:
       POSTGRES_DB: altair_labs_db
-      POSTGRES_USER: altair
-      POSTGRES_PASSWORD: altair
+      POSTGRES_USER: ${POSTGRES_USER:-altair}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-altair}
     ports:
-      - "5437:5432"
+      - "${PG_LABS_PORT:-5437}:5432"
     volumes:
       - ./postgres/labs:/docker-entrypoint-initdb.d
       - pg_labs:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-altair} -d altair_labs_db || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
 
   grafana:
     image: grafana/grafana:latest
     container_name: altair-grafana
     ports:
-      - "4000:3000"
+      - "${GRAFANA_PORT:-4000}:3000"
     environment:
-      GF_SECURITY_ADMIN_USER: admin
-      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-change-me}
     volumes:
       - ./grafana/provisioning:/etc/grafana/provisioning
 
@@ -84,7 +113,7 @@ services:
     environment:
       KC_DB: dev-file
     ports:
-      - "8080:8080"
+      - "${KEYCLOAK_PORT:-8080}:8080"
     volumes:
       - ./keycloak/realms:/opt/keycloak/data/import
       - ./keycloak/themes:/opt/keycloak/themes

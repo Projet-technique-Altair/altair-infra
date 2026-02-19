@@ -5,7 +5,7 @@
 
 [![Docker Compose](https://img.shields.io/badge/docker-compose-2496ED)](https://docs.docker.com/compose/)
 
-[![PostgreSQL](https://img.shields.io/badge/postgresql-14+-336791)](https://www.postgresql.org/)
+[![PostgreSQL](https://img.shields.io/badge/postgresql-16-336791)](https://www.postgresql.org/)
 
 [![Keycloak](https://img.shields.io/badge/keycloak-26.5.0-blue)](https://www.keycloak.org/)
 
@@ -35,10 +35,10 @@ This infrastructure follows a **strict separation pattern**: each microservice o
 
 ## ⚠️ Important Notes
 
-- **Database initialization only runs on first launch** (empty volumes). To reset schemas, delete Docker volumes.
-- **Keycloak requires `.env` file** with admin credentials (see Requirements section)
-- **Gateway and Frontend are NOT included** in this compose stack – they run separately
-- Each PostgreSQL instance uses different credentials for network isolation
+- **Database initialization only runs on first launch** (empty volumes). To reset schemas and data, remove Docker volumes (see Reset section).
+- **Keycloak requires a `.env` file** (use `.env.example` as a template). Never commit `.env`.
+- **Gateway and Frontend are NOT included** in this compose stack – they run separately.
+- **Ports and credentials are dev defaults** and can be overridden via environment variables (see `.env.example`) for network isolation
 
 ---
 
@@ -107,23 +107,17 @@ This infrastructure follows a **strict separation pattern**: each microservice o
 
 ### Environment Variables
 
-Create a `.env` file at the root of `altair-infra/`:
+Create a `.env` file at the root of `altair-infra/` from the provided template:
 
 ```bash
-# Keycloak Admin Credentials (required)
-KC_BOOTSTRAP_ADMIN_USERNAME=admin
-KC_BOOTSTRAP_ADMIN_PASSWORD=admin
-
-# Keycloak Configuration
-KEYCLOAK_ISSUER=http://localhost:8080/realms/altair
-KC_DB=dev-file
-
-# Optional: PostgreSQL credentials (defaults are set in compose file)
-# POSTGRES_USER=altair
-# POSTGRES_PASSWORD=altair
+cp .env.example .env
 ```
 
-**⚠️ Warning:** Do NOT commit `.env` to version control. Use `.env.example` for templates.
+Then edit .env and set at least:
+KC_BOOTSTRAP_ADMIN_USERNAME
+KC_BOOTSTRAP_ADMIN_PASSWORD
+
+**Do NOT commit .env to version control. Use .env.example as the source of truth.**
 
 ---
 
@@ -132,22 +126,18 @@ KC_DB=dev-file
 ### Quick Start
 
 ```bash
-# 1. Clone the repository
+# 1) Enter the repository
 cd altair-infra
 
-# 2. Create .env file with Keycloak credentials
-cat > .env << EOF
-KC_BOOTSTRAP_ADMIN_USERNAME=admin
-KC_BOOTSTRAP_ADMIN_PASSWORD=admin
-KEYCLOAK_ISSUER=http://localhost:8080/realms/altair
-KC_DB=dev-file
-EOF
+# 2) Create your local environment file
+cp .env.example .env
+# Edit .env and set your Keycloak admin password
 
-# 3. Start all services
-docker compose up -d
+# 3) Start the stack
+make up
 
-# 4. Verify services are running
-docker compose ps
+# 4) Check readiness (waits for Grafana + Keycloak HTTP to respond)
+make health
 ```
 
 ### First-Time Setup
@@ -172,16 +162,21 @@ cd altair-infra
 docker compose up -d
 ```
 
-**Services will be available at:**
+**Services will be available at (default ports):**
 
-- **Keycloak:** http://localhost:8080 (admin / admin)
-- **Grafana:** http://localhost:4000 (admin / admin)
-- **PostgreSQL instances:**
-    - Users DB: [`localhost:5433`](http://localhost:5433)
-    - Groups DB: [`localhost:5434`](http://localhost:5434)
-    - Starpaths DB: [`localhost:5435`](http://localhost:5435)
-    - Sessions DB: [`localhost:5436`](http://localhost:5436)
-    - Labs DB: [`localhost:5437`](http://localhost:5437)
+- **Keycloak:** http://localhost:8080  
+  Admin credentials are defined in `.env` (`KC_BOOTSTRAP_ADMIN_USERNAME` / `KC_BOOTSTRAP_ADMIN_PASSWORD`).
+- **Grafana:** http://localhost:4000  
+  Admin credentials are defined in `.env` (`GRAFANA_ADMIN_USER` / `GRAFANA_ADMIN_PASSWORD`).
+- **PostgreSQL instances (host ports are configurable):**
+  - Users DB: `localhost:5433`
+  - Groups DB: `localhost:5434`
+  - Starpaths DB: `localhost:5435`
+  - Sessions DB: `localhost:5436`
+  - Labs DB: `localhost:5437`
+
+> If you have port collisions, override the `*_PORT` variables in `.env` (see `.env.example`).
+
 
 ### Starting Gateway and Frontend
 
@@ -354,6 +349,19 @@ altair-infra/
 
 ## Keycloak Configuration
 
+### Issuer URLs (Public vs Internal)
+
+When working with OAuth2/OIDC, the issuer URL must match the context:
+
+- **Public issuer (host / browser / gateway on host):**  
+  `KEYCLOAK_ISSUER_PUBLIC=http://localhost:${KEYCLOAK_PORT}/realms/altair`
+
+- **Internal issuer (containers inside Docker network):**  
+  `KEYCLOAK_ISSUER_INTERNAL=http://keycloak:8080/realms/altair`
+
+This repository exposes both variables in `.env.example` to avoid ambiguity.
+
+
 ### Auto-Imported Realm
 
 **Realm name:** `altair`
@@ -465,9 +473,8 @@ docker compose up --build --force-recreate
 # View all container statuses
 docker compose ps
 
-# Check specific service logs
-docker compose logs keycloak
-docker compose logs altair-postgres-users
+# Wait for Grafana and Keycloak HTTP endpoints to respond
+make health
 ```
 
 ### Connect to PostgreSQL
@@ -513,7 +520,8 @@ docker compose up -d
 - **Dev-mode Keycloak:** Uses embedded `dev-file` database (not production-ready)
 - **No Prometheus/Loki:** Grafana uses TestData only (metrics collection not wired)
 - **No automated backups:** Data persistence relies on Docker volumes
-- **Hardcoded ports:** Services conflict if ports 5433-5437, 8080, 4000 are in use
+- **Ports:** Defaults are provided, but all exposed ports can be overridden via `.env` (see `.env.example`).
+
 
 ### 🟡 Security Notes
 
