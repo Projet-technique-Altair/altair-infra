@@ -1,0 +1,51 @@
+# ============================================
+# Promtail Configuration - File-based Docker logs
+# Altaïr Infra (stable mode, no Docker API usage)
+# ============================================
+
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+# Track reading position to avoid re-sending old logs
+positions:
+  filename: /tmp/positions.yaml
+
+# Loki endpoint
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+
+  - job_name: docker-files
+
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: docker
+          stack: altair-infra
+          __path__: /var/lib/docker/containers/*/*-json.log
+
+    relabel_configs:
+      - source_labels: ['__path__']
+        regex: '.*/containers/([^/]+)/.*'
+        target_label: container_id
+        
+    pipeline_stages:
+
+      # Parse Docker JSON log format
+      - json:
+          expressions:
+            log: log
+            stream: stream
+            time: time
+
+      # Use Docker log timestamp
+      - timestamp:
+          source: time
+          format: RFC3339Nano
+
+      # Replace raw JSON line with actual log content
+      - output:
+          source: log
