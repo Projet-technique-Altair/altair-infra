@@ -1,0 +1,43 @@
+name: infra CI
+
+on:
+  pull_request:
+    branches: [develop]
+  push:
+    branches: [develop]
+
+permissions:
+  contents: read
+
+jobs:
+  lint-config:
+    
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install tooling
+        # shellcheck/shfmt: shell quality + format, yamllint: YAML syntax/style checks.
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y shellcheck shfmt python3-pip
+          pip3 install --user yamllint
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: Lint YAML files
+        # Catch YAML syntax/indentation mistakes early (workflows, compose, configs).
+        run: yamllint .
+
+      - name: Lint shell scripts
+        # Detect common shell bugs and unsafe patterns.
+        run: find . -type f -name "*.sh" -print0 | xargs -0 -r shellcheck
+
+      - name: Check shell formatting
+        # Enforce consistent script formatting.
+        run: find . -type f -name "*.sh" -print0 | xargs -0 -r shfmt -d
+
+      - name: Validate Docker Compose configuration
+        # Validate compose parsing/interpolation without starting the stack.
+        run: docker compose config >/dev/null
