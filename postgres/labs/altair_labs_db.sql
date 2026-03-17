@@ -16,9 +16,14 @@ CREATE TABLE labs (
   description TEXT,
   difficulty VARCHAR(50),
   category VARCHAR(100),
-  template_path TEXT,
-  lab_type VARCHAR(50) NOT NULL DEFAULT 'course',  
-    -- course | ctf_terminal_guided | ctf_terminal_non_guided | ctf_web
+  template_path TEXT NOT NULL,
+  lab_type VARCHAR(50) NOT NULL DEFAULT 'ctf_terminal_guided',
+    -- legacy type derived from lab_family + lab_delivery
+  lab_family VARCHAR(50) NOT NULL DEFAULT 'guided',
+    -- course | guided | non_guided
+  lab_delivery VARCHAR(50) NOT NULL DEFAULT 'terminal',
+    -- terminal | web | complex
+  runtime JSONB NOT NULL DEFAULT '{"app_port": null, "services": [], "entrypoints": []}'::jsonb,
   objectives TEXT,
   prerequisites TEXT,
   story TEXT,
