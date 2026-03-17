@@ -12,7 +12,9 @@ services:
       - ./postgres/users:/docker-entrypoint-initdb.d
       - pg_users:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-altair} -d altair_users_db || exit 1"]
+      test:
+        ["CMD-SHELL",
+         "pg_isready -U ${POSTGRES_USER:-altair} -d altair_users_db || exit 1"]
       interval: 5s
       timeout: 3s
       retries: 20
@@ -31,7 +33,9 @@ services:
       - ./postgres/groups:/docker-entrypoint-initdb.d
       - pg_groups:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-altair} -d altair_groups_db || exit 1"]
+      test:
+        ["CMD-SHELL",
+         "pg_isready -U ${POSTGRES_USER:-altair} -d altair_groups_db || exit 1"]
       interval: 5s
       timeout: 3s
       retries: 20
@@ -50,7 +54,9 @@ services:
       - ./postgres/starpaths:/docker-entrypoint-initdb.d
       - pg_starpaths:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-altair} -d altair_starpaths_db || exit 1"]
+      test:
+        ["CMD-SHELL",
+         "pg_isready -U ${POSTGRES_USER:-altair} -d altair_starpaths_db || exit 1"]
       interval: 5s
       timeout: 3s
       retries: 20
@@ -68,7 +74,9 @@ services:
       - ./postgres/sessions:/docker-entrypoint-initdb.d
       - pg_sessions:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-altair} -d altair_sessions_db || exit 1"]
+      test:
+        ["CMD-SHELL",
+         "pg_isready -U ${POSTGRES_USER:-altair} -d altair_sessions_db || exit 1"]
       interval: 5s
       timeout: 3s
       retries: 20
@@ -87,7 +95,9 @@ services:
       - ./postgres/labs:/docker-entrypoint-initdb.d
       - pg_labs:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-altair} -d altair_labs_db || exit 1"]
+      test:
+        ["CMD-SHELL",
+         "pg_isready -U ${POSTGRES_USER:-altair} -d altair_labs_db || exit 1"]
       interval: 5s
       timeout: 3s
       retries: 20
@@ -135,7 +145,9 @@ services:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - prometheus_data:/prometheus
     healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://localhost:9090/-/ready | grep -q Prometheus"]
+      test:
+        ["CMD-SHELL",
+         "wget -qO- http://localhost:9090/-/ready | grep -q Prometheus"]
       interval: 10s
       timeout: 5s
       retries: 30
@@ -151,7 +163,9 @@ services:
       - ./loki/config.yml:/etc/loki/config.yml:ro
       - loki_data:/loki
     healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://localhost:3100/ready | grep -q ready"]
+      test:
+        ["CMD-SHELL",
+         "wget -qO- http://localhost:3100/ready | grep -q ready"]
       interval: 10s
       timeout: 5s
       retries: 30

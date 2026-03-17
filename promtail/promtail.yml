@@ -31,7 +31,7 @@ scrape_configs:
       - source_labels: ['__path__']
         regex: '.*/containers/([^/]+)/.*'
         target_label: container_id
-        
+
     pipeline_stages:
 
       # Parse Docker JSON log format
