@@ -18,7 +18,9 @@ CREATE TABLE lab_sessions (
   -- created | running | stopped | expired | error
 
   container_id TEXT,
+  runtime_kind TEXT,
   webshell_url TEXT,
+  app_url TEXT,
 
   created_at TIMESTAMP DEFAULT timezone('UTC'::text, now()) NOT NULL,
   expires_at TIMESTAMP
@@ -57,4 +59,3 @@ CREATE TABLE lab_progress (
     REFERENCES lab_sessions(session_id)
     ON DELETE CASCADE
 );
-
