@@ -1,3 +1,4 @@
+---
 # ============================================
 # Promtail Configuration - File-based Docker logs
 # Altaïr Infra (stable mode, no Docker API usage)
