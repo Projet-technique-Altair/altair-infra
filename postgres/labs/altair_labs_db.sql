@@ -16,6 +16,7 @@ CREATE TABLE labs (
   description TEXT,
   difficulty VARCHAR(50),
   category VARCHAR(100),
+  visibility VARCHAR(16) NOT NULL DEFAULT 'private',
   template_path TEXT NOT NULL,
   lab_type VARCHAR(50) NOT NULL DEFAULT 'ctf_terminal_guided',
     -- legacy type derived from lab_family + lab_delivery
