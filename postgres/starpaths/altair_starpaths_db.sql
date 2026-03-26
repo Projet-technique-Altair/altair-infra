@@ -16,6 +16,7 @@ CREATE TABLE starpaths (
   name VARCHAR(255) NOT NULL,
   description TEXT,
   difficulty VARCHAR(50),
+  visibility VARCHAR(16) NOT NULL DEFAULT 'private',
 
   created_at TIMESTAMP DEFAULT timezone('UTC'::text, now()) NOT NULL
 );
