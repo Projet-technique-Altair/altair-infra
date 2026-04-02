@@ -59,3 +59,44 @@ CREATE TABLE lab_progress (
     REFERENCES lab_sessions(session_id)
     ON DELETE CASCADE
 );
+
+-- ======================
+-- TABLE: learner_lab_status
+-- ======================
+-- Product-level learner tracking for dashboard and explorer follow state.
+-- This is intentionally separate from lab_sessions:
+-- - lab_sessions tracks runtime lifecycle
+-- - learner_lab_status tracks the learner's relationship to a lab
+CREATE TABLE learner_lab_status (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL,
+  lab_id UUID NOT NULL,
+
+  status VARCHAR(50) NOT NULL DEFAULT 'todo',
+  -- todo | in_progress | finished
+
+  followed_at TIMESTAMP DEFAULT timezone('UTC'::text, now()) NOT NULL,
+  started_at TIMESTAMP,
+  finished_at TIMESTAMP,
+  last_activity_at TIMESTAMP DEFAULT timezone('UTC'::text, now()) NOT NULL,
+  -- We keep a pointer to the latest relevant runtime session so dashboard progress can stay
+  -- session-centric for now without duplicating progress rows here.
+  last_session_id UUID,
+
+  UNIQUE (user_id, lab_id),
+  FOREIGN KEY (last_session_id)
+    REFERENCES lab_sessions(session_id)
+    ON DELETE SET NULL
+);
+
+CREATE INDEX idx_learner_lab_status_user
+  ON learner_lab_status(user_id);
+
+CREATE INDEX idx_learner_lab_status_lab
+  ON learner_lab_status(lab_id);
+
+CREATE INDEX idx_learner_lab_status_status
+  ON learner_lab_status(status);
+
+CREATE INDEX idx_learner_lab_status_last_activity
+  ON learner_lab_status(last_activity_at DESC);
