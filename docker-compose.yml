@@ -107,6 +107,25 @@ services:
       timeout: 3s
       retries: 20
 
+  postgres-gamification:
+    image: postgres:16
+    container_name: altair-postgres-gamification
+    environment:
+      POSTGRES_DB: altair_gamification
+      POSTGRES_USER: ${POSTGRES_USER:-altair}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-altair}
+    ports:
+      - "${PG_GAMIFICATION_PORT:-5438}:5432"
+    volumes:
+      - pg_gamification:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        ["CMD-SHELL",
+         "pg_isready -U ${POSTGRES_USER:-altair} -d altair_gamification || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
 
   grafana:
     image: grafana/grafana:latest
@@ -209,5 +228,6 @@ volumes:
   pg_starpaths:
   pg_sessions:
   pg_labs:
+  pg_gamification:
   prometheus_data:
   loki_data:
