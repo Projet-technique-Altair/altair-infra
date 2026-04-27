@@ -17,6 +17,7 @@ CREATE TABLE labs (
   difficulty VARCHAR(50),
   category VARCHAR(100),
   visibility VARCHAR(16) NOT NULL DEFAULT 'private',
+  content_status TEXT NOT NULL DEFAULT 'active',
   template_path TEXT NOT NULL,
   lab_type VARCHAR(50) NOT NULL DEFAULT 'ctf_terminal_guided',
     -- legacy type derived from lab_family + lab_delivery
@@ -35,6 +36,12 @@ CREATE TABLE labs (
 -- Indexes
 CREATE INDEX idx_labs_creator
   ON labs(creator_id);
+
+ALTER TABLE labs ADD CONSTRAINT labs_content_status_check
+  CHECK (content_status IN ('active', 'archived'));
+
+CREATE INDEX idx_labs_content_status
+  ON labs(content_status);
 
 -- ======================
 -- TABLE: lab_steps

@@ -14,6 +14,7 @@ CREATE TABLE groups (
   creator_id UUID NOT NULL,   -- référence logique vers Users MS
   name VARCHAR(255) NOT NULL,
   description TEXT,
+  status TEXT NOT NULL DEFAULT 'active',
   created_by UUID NOT NULL,
   created_at TIMESTAMP DEFAULT timezone('UTC'::text, now()) NOT NULL
 );
@@ -21,6 +22,12 @@ CREATE TABLE groups (
 -- Indexes
 CREATE INDEX idx_groups_creator
   ON groups(creator_id);
+
+ALTER TABLE groups ADD CONSTRAINT groups_status_check
+  CHECK (status IN ('active', 'locked'));
+
+CREATE INDEX idx_groups_status
+  ON groups(status);
 
 -- ======================
 -- TABLE: group_members
@@ -67,5 +74,4 @@ CREATE TABLE group_starpaths (
     REFERENCES groups(group_id)
     ON DELETE CASCADE
 );
-
 

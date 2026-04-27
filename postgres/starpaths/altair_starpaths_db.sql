@@ -17,6 +17,7 @@ CREATE TABLE starpaths (
   description TEXT,
   difficulty VARCHAR(50),
   visibility VARCHAR(16) NOT NULL DEFAULT 'private',
+  content_status TEXT NOT NULL DEFAULT 'active',
 
   created_at TIMESTAMP DEFAULT timezone('UTC'::text, now()) NOT NULL
 );
@@ -24,6 +25,12 @@ CREATE TABLE starpaths (
 -- Indexes
 CREATE INDEX idx_starpaths_creator
   ON starpaths(creator_id);
+
+ALTER TABLE starpaths ADD CONSTRAINT starpaths_content_status_check
+  CHECK (content_status IN ('active', 'archived'));
+
+CREATE INDEX idx_starpaths_content_status
+  ON starpaths(content_status);
 
 -- ======================
 -- TABLE: starpath_labs
