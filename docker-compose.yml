@@ -128,6 +128,27 @@ services:
       timeout: 3s
       retries: 20
 
+  postgres-moderation:
+    image: postgres:16
+    container_name: altair-postgres-moderation
+    environment:
+      POSTGRES_DB: altair_moderation_db
+      POSTGRES_USER: ${POSTGRES_USER:-altair}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-altair}
+    ports:
+      - "${PG_MODERATION_PORT:-5439}:5432"
+    volumes:
+      - pg_moderation:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          pg_isready -U ${POSTGRES_USER:-altair}
+          -d altair_moderation_db || exit 1
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
 
   grafana:
     image: grafana/grafana:latest
@@ -231,5 +252,6 @@ volumes:
   pg_sessions:
   pg_labs:
   pg_gamification:
+  pg_moderation:
   prometheus_data:
   loki_data:
