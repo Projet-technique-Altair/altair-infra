@@ -1,7 +1,8 @@
+---
 apiVersion: 1
 
 providers:
-  - name: 'Altair PoC Dashboards'
+  - name: 'Altair Dashboards'
     orgId: 1
     folder: 'Altaïr'
     type: file

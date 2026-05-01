@@ -99,6 +99,7 @@
         "composite": true,
         "composites": {
           "realm": [
+            "learner",
             "offline_access",
             "uma_authorization"
           ],

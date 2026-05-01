@@ -70,6 +70,15 @@
             Forgot password?
           </a>
         </div>
+
+        <#if realm.password && realm.registrationAllowed && !registrationDisabled??>
+          <div class="register">
+            <span>New user?</span>
+            <a href="${url.registrationUrl}">
+              Register
+            </a>
+          </div>
+        </#if>
       </form>
 
     </div>

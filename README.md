@@ -278,10 +278,13 @@ Each microservice has a dedicated PostgreSQL database with isolated schemas.
 
 **Tables:**
 
-- `lab_sessions` – Active lab instances (user_id, lab_id, container_id, webshell_url, status, expires_at)
+- `lab_sessions` – Pedagogical sessions (user_id, lab_id, status, current_runtime_id, completed_at, last_activity_at)
+- `lab_session_runtimes` – Runtime history per session (container_id, runtime_kind, namespace, URLs, status, restart_index)
 - `lab_progress` – Gamification data per session (completed_steps, hints_used, attempts_per_step, score)
 
-**Session statuses:** `created`, `running`, `stopped`, `expired`, `error`
+**Session statuses:** `created`, `in_progress`, `completed`
+
+**Runtime statuses:** `created`, `starting`, `running`, `stopped`, `expired`, `error`
 
 **Foreign Key:** `lab_progress.session_id → lab_sessions.session_id` (cascade delete)
 
