@@ -165,14 +165,14 @@ html, body {
 /* =========================
    FORM
 ========================= */
-label {
+.login-card label {
   font-size: 13px;
   margin-bottom: 6px;
   display: block;
   opacity: 0.75;
 }
 
-input {
+.login-card input {
   width: 100%;
   padding: 14px;
   margin-bottom: 18px;
@@ -182,7 +182,7 @@ input {
   color: white;
 }
 
-button {
+.login-card button {
   width: 100%;
   padding: 15px;
   border-radius: 999px;
@@ -199,6 +199,17 @@ button {
   );
 }
 
+.error {
+  margin-bottom: 18px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: rgba(255, 107, 107, 0.14);
+  border: 1px solid rgba(255, 107, 107, 0.24);
+  color: #ffd3d3;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
 .forgot {
   margin-top: 16px;
   text-align: center;
@@ -208,6 +219,61 @@ button {
   font-size: 13px;
   color: rgba(255,255,255,0.55);
   text-decoration: none;
+}
+
+.register {
+  margin-top: 14px;
+  text-align: center;
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+}
+
+.register a {
+  color: #7fd3ff;
+  text-decoration: none;
+  margin-left: 4px;
+}
+
+.register a:hover {
+  text-decoration: underline;
+}
+
+.register-card {
+  width: 460px;
+}
+
+.register-intro {
+  margin-top: -6px;
+  margin-bottom: 22px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.62);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.form-grid .login-card input,
+.form-grid input {
+  margin-bottom: 18px;
+}
+
+.register-actions {
+  margin-top: 4px;
+  margin-bottom: 14px;
+}
+
+.back-link {
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
 }
 
 /* =========================
@@ -229,5 +295,14 @@ button {
 
   .login-card {
     width: 90%;
+  }
+
+  .register-card {
+    width: 90%;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
   }
 }
