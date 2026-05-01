@@ -641,3 +641,9 @@ This infrastructure is part of the Altaïr platform ecosystem:
 ## License
 
 Internal Altaïr Platform Infrastructure – Not licensed for external use.
+## May 2026 Security And Platform Updates
+
+- The Keycloak Cloud Run image now declares `USER 1000` after the Keycloak build step so the runtime does not run as root.
+- Keycloak themes remain copied into `/opt/keycloak/themes/altair`; keep theme assets readable by the Keycloak runtime user.
+- Keycloak admin credentials, database URLs, and realm secrets must stay in Cloud Run secrets or local-only environment files, never in README examples.
+- Latest Trivy scan status for this repo, excluding intentionally vulnerable lab templates: no HIGH or CRITICAL findings.

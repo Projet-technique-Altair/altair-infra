@@ -12,4 +12,6 @@ EXPOSE 8080
 
 RUN /opt/keycloak/bin/kc.sh build
 
+USER 1000
+
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start"]
