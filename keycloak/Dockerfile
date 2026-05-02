@@ -1,4 +1,4 @@
-FROM quay.io/keycloak/keycloak:latest
+FROM quay.io/keycloak/keycloak:26.6.1
 
 ENV KC_DB=postgres
 ENV KC_HTTP_ENABLED=true
